@@ -3,6 +3,7 @@ const route = express.Router(); //Allows us use express router in this file
 const services = require('../services/render');//uses the render.js file from services here
 
 const controller = require('../controller/controller');//uses the render.js file from services here
+const { validateDrugData, validateDrugUpdateData } = require('../middleware/validation');//import validation middleware
 
 
 route.get('/', services.home);
@@ -17,9 +18,9 @@ route.get('/update-drug', services.updateDrug);
 
 
 // API for CRUD operations
-route.post('/api/drugs', controller.create);
+route.post('/api/drugs', validateDrugData, controller.create);
 route.get('/api/drugs', controller.find);
-route.put('/api/drugs/:id', controller.update);
+route.put('/api/drugs/:id', validateDrugUpdateData, controller.update);
 route.delete('/api/drugs/:id', controller.delete);
 
 module.exports = route;//exports this so it can always be used elsewhere
